@@ -7,6 +7,7 @@ import {
 import DiscordProvider from "next-auth/providers/discord";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -64,6 +65,18 @@ export const authOptions: NextAuthOptions = {
       clientSecret: env.GOOGLE_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true,
     }),
+    EmailProvider({
+      server: {
+        host: env.EMAIL_HOST,
+        port: env.EMAIL_PORT,
+        auth: {
+          user: env.EMAIL_USER,
+          pass: env.EMAIL_PASSWORD,
+        },
+      },
+      from: env.EMAIL_FROM,
+    }),
+
     /**
      * ...add more providers here.
      *
