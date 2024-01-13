@@ -15,16 +15,136 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  createdBy   User   @relation(fields: [createdById], references: [id])
+model Comment {
+  id          Int      @id @default(autoincrement())
+  item        Item     @relation(fields: [itemId], references: [id])
+  itemId      Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   User     @relation(fields: [createdById], references: [id])
   createdById String
+  date        DateTime
+  textMd      String   @db.Text
+}
+
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String
+  items Item[]
+}
+
+model Item {
+  id           Int        @id @default(autoincrement())
+  name         String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId Int
+  comments     Comment[]
+  tags         Tag[]
+  likedBy      User[]
+
+  strValue1  String?   @db.Text
+  intValue1  Int?
+  textValue1 String?   @db.Text
+  boolValue1 Boolean?
+  dateValue1 DateTime?
+  strValue2  String?   @db.Text
+  intValue2  Int?
+  textValue2 String?   @db.Text
+  boolValue2 Boolean?
+  dateValue2 DateTime?
+  strValue3  String?   @db.Text
+  intValue3  Int?
+  textValue3 String?   @db.Text
+  boolValue3 Boolean?
+  dateValue3 DateTime?
+}
+
+model Topic {
+  id          Int          @id @default(autoincrement())
+  name        String
+  collections Collection[]
+}
+
+model Collection {
+  id            Int      @id @default(autoincrement())
+  name          String
+  descriptionMd String   @db.Text
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdBy     User     @relation(fields: [createdById], references: [id])
+  createdById   String
+  topic         Topic    @relation(fields: [topicId], references: [id])
+  topicId       Int
+  items         Item[]
+
+  optStrLabel1    String?
+  optStrEnabled1  Boolean @default(false)
+  optIntLabel1    String?
+  optIntEnabled1  Boolean @default(false)
+  optTextLabel1   String?
+  optTextEnabled1 Boolean @default(false)
+  optBoolLabel1   String?
+  optBoolEnabled1 Boolean @default(false)
+  optDateLabel1   String?
+  optDateEnabled1 Boolean @default(false)
+  optStrLabel2    String?
+  optStrEnabled2  Boolean @default(false)
+  optIntLabel2    String?
+  optIntEnabled2  Boolean @default(false)
+  optTextLabel2   String?
+  optTextEnabled2 Boolean @default(false)
+  optBoolLabel2   String?
+  optBoolEnabled2 Boolean @default(false)
+  optDateLabel2   String?
+  optDateEnabled2 Boolean @default(false)
+  optStrLabel3    String?
+  optStrEnabled3  Boolean @default(false)
+  optIntLabel3    String?
+  optIntEnabled3  Boolean @default(false)
+  optTextLabel3   String?
+  optTextEnabled3 Boolean @default(false)
+  optBoolLabel3   String?
+  optBoolEnabled3 Boolean @default(false)
+  optDateLabel3   String?
+  optDateEnabled3 Boolean @default(false)
 
   @@index([name])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Language {
+  ENGLISH
+  RUSSIAN
+}
+
+enum Theme {
+  LIGHT
+  DARK
+}
+
+model User {
+  role        Role         @default(USER)
+  lang        Language     @default(ENGLISH)
+  theme       Theme        @default(LIGHT)
+  collections Collection[]
+  comments    Comment[]
+  likedItems  Item[]
+
+  // Necessary for Next auth
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
 }
 
 // Necessary for Next auth
@@ -52,17 +172,6 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  posts         Post[]
 }
 
 model VerificationToken {
