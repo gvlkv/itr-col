@@ -5,6 +5,16 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  reactStrictMode: true,
+  swcMinify: true,
+  images: {
+    domains: [
+      "cdn.discordapp.com",
+      "lh3.googleusercontent.com",
+      "avatars.githubusercontent.com",
+    ],
+  },
+};
 
 export default config;

@@ -1,12 +1,13 @@
 import "~/styles/globals.css";
-
+import "react-toastify/dist/ReactToastify.css";
+import NavBar from "~/app/_components/nav-bar";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-
 import { TRPCReactProvider } from "~/trpc/react";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ["latin", "cyrillic"],
   variable: "--font-sans",
 });
 
@@ -16,16 +17,20 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+};
+
+export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
-          {children}
+          <div className="flex flex-col">
+            <NavBar />
+            {children}
+          </div>
+          <ToastContainer />
         </TRPCReactProvider>
       </body>
     </html>

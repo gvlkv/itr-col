@@ -8,14 +8,20 @@ import {
 
 export const collectionRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(z.object({ name: z.string().min(1), description: z.string() }))
-    .mutation(async ({ ctx, input }) => {
+    .input(
+      z.object({
+        name: z.string().min(1),
+        description: z.string().min(1),
+        topic: z.number(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
       return ctx.db.collection.create({
         data: {
           name: input.name,
           descriptionMd: input.description,
           createdBy: { connect: { id: ctx.session.user.id } },
-          topic: { connect: { id: 1 } },
+          topic: { connect: { id: input.topic } },
         },
       });
     }),
@@ -31,5 +37,9 @@ export const collectionRouter = createTRPCRouter({
       orderBy: { createdAt: "desc" },
       where: { createdBy: { id: ctx.session.user.id } },
     });
+  }),
+
+  getTopics: publicProcedure.query(({ ctx }) => {
+    return ctx.db.topic.findMany();
   }),
 });
