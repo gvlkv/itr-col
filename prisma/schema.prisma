@@ -44,21 +44,21 @@ model Item {
   tags         Tag[]
   likedBy      User[]
 
-  strValue1  String?   @db.Text
-  intValue1  Int?
-  textValue1 String?   @db.Text
   boolValue1 Boolean?
-  dateValue1 DateTime?
-  strValue2  String?   @db.Text
-  intValue2  Int?
-  textValue2 String?   @db.Text
   boolValue2 Boolean?
-  dateValue2 DateTime?
-  strValue3  String?   @db.Text
-  intValue3  Int?
-  textValue3 String?   @db.Text
   boolValue3 Boolean?
+  dateValue1 DateTime?
+  dateValue2 DateTime?
   dateValue3 DateTime?
+  intValue1  Int?
+  intValue2  Int?
+  intValue3  Int?
+  strValue1  String?   @db.Text
+  strValue2  String?   @db.Text
+  strValue3  String?   @db.Text
+  textValue1 String?   @db.Text
+  textValue2 String?   @db.Text
+  textValue3 String?   @db.Text
 }
 
 model Topic {
@@ -80,36 +80,36 @@ model Collection {
   topicId       Int
   items         Item[]
 
-  optStrLabel1    String?
-  optStrEnabled1  Boolean @default(false)
-  optIntLabel1    String?
-  optIntEnabled1  Boolean @default(false)
-  optTextLabel1   String?
-  optTextEnabled1 Boolean @default(false)
-  optBoolLabel1   String?
   optBoolEnabled1 Boolean @default(false)
-  optDateLabel1   String?
-  optDateEnabled1 Boolean @default(false)
-  optStrLabel2    String?
-  optStrEnabled2  Boolean @default(false)
-  optIntLabel2    String?
-  optIntEnabled2  Boolean @default(false)
-  optTextLabel2   String?
-  optTextEnabled2 Boolean @default(false)
-  optBoolLabel2   String?
   optBoolEnabled2 Boolean @default(false)
-  optDateLabel2   String?
-  optDateEnabled2 Boolean @default(false)
-  optStrLabel3    String?
-  optStrEnabled3  Boolean @default(false)
-  optIntLabel3    String?
-  optIntEnabled3  Boolean @default(false)
-  optTextLabel3   String?
-  optTextEnabled3 Boolean @default(false)
-  optBoolLabel3   String?
   optBoolEnabled3 Boolean @default(false)
-  optDateLabel3   String?
+  optBoolLabel1   String?
+  optBoolLabel2   String?
+  optBoolLabel3   String?
+  optDateEnabled1 Boolean @default(false)
+  optDateEnabled2 Boolean @default(false)
   optDateEnabled3 Boolean @default(false)
+  optDateLabel1   String?
+  optDateLabel2   String?
+  optDateLabel3   String?
+  optIntEnabled1  Boolean @default(false)
+  optIntEnabled2  Boolean @default(false)
+  optIntEnabled3  Boolean @default(false)
+  optIntLabel1    String?
+  optIntLabel2    String?
+  optIntLabel3    String?
+  optStrEnabled1  Boolean @default(false)
+  optStrEnabled2  Boolean @default(false)
+  optStrEnabled3  Boolean @default(false)
+  optStrLabel1    String?
+  optStrLabel2    String?
+  optStrLabel3    String?
+  optTextEnabled1 Boolean @default(false)
+  optTextEnabled2 Boolean @default(false)
+  optTextEnabled3 Boolean @default(false)
+  optTextLabel1   String?
+  optTextLabel2   String?
+  optTextLabel3   String?
 
   @@index([name])
 }
