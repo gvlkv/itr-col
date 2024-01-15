@@ -14,6 +14,7 @@ export default async function CollectionsShowcase() {
           name={col.name}
           description={col.descriptionMd}
           topic={getTopicName(col.topicId) ?? ""}
+          imageUrl={col.image}
         />
       ))}
     </div>

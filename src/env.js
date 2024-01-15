@@ -39,6 +39,12 @@ export const env = createEnv({
     EMAIL_USER: z.string(),
     EMAIL_PASSWORD: z.string(),
     EMAIL_FROM: z.string(),
+    AWS_ACCESS_KEY_ID: z.string(),
+    AWS_SECRET_ACCESS_KEY: z.string(),
+    AWS_IMAGES_BUCKET_NAME: z.string(),
+    AWS_REGION: z.string(),
+    UPLOAD_MAX_FILE_SIZE: z.number(),
+    UPLOAD_TIME_LIMIT: z.number(),
   },
 
   /**
@@ -70,6 +76,12 @@ export const env = createEnv({
     EMAIL_USER: process.env.EMAIL_USER,
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
     EMAIL_FROM: process.env.EMAIL_FROM,
+    AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+    AWS_IMAGES_BUCKET_NAME: process.env.AWS_IMAGES_BUCKET_NAME,
+    AWS_REGION: process.env.AWS_REGION,
+    UPLOAD_MAX_FILE_SIZE: Number(process.env.UPLOAD_MAX_FILE_SIZE),
+    UPLOAD_TIME_LIMIT: Number(process.env.UPLOAD_TIME_LIMIT),
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

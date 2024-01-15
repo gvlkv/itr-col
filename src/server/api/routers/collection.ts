@@ -1,4 +1,8 @@
 import { z } from "zod";
+import { createPresignedPost } from "@aws-sdk/s3-presigned-post";
+import { s3 } from "~/server/aws";
+import { env } from "~/env";
+import { v4 } from "uuid";
 
 import {
   createTRPCRouter,
@@ -6,6 +10,7 @@ import {
   publicProcedure,
 } from "~/server/api/trpc";
 import config from "~/util/config";
+import { TRPCError } from "@trpc/server";
 
 export const userFieldSchema = z.object({
   type: z.number(),
@@ -34,6 +39,7 @@ export const collectionRouter = createTRPCRouter({
           ),
         topic: z.number(),
         types: z.array(userFieldSchema),
+        image: z.string().optional(),
       }),
     )
     .mutation(({ ctx, input }) => {
@@ -79,8 +85,31 @@ export const collectionRouter = createTRPCRouter({
           topic: { connect: { id: input.topic } },
           ...enabledFields,
           ...fildsNames,
+          image: input.image,
         },
       });
+    }),
+
+  createPresignedImageUrl: protectedProcedure
+    .input(z.object({}))
+    .mutation(async ({}) => {
+      try {
+        const { url, fields } = await createPresignedPost(s3, {
+          Bucket: env.AWS_IMAGES_BUCKET_NAME,
+          Key: v4(),
+          Expires: env.UPLOAD_TIME_LIMIT,
+          Conditions: [
+            ["starts-with", "$Content-Type", "image/"],
+            ["content-length-range", 0, env.UPLOAD_MAX_FILE_SIZE],
+          ],
+        });
+        return { url, fields };
+      } catch (e) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Error creating presigned image url.",
+        });
+      }
     }),
 
   getAll: publicProcedure.query(({ ctx }) => {
