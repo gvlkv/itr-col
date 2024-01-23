@@ -112,9 +112,17 @@ export const collectionRouter = createTRPCRouter({
       }
     }),
 
+  getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
+    return ctx.db.collection.findUnique({
+      where: { id: input },
+      include: { topic: true },
+    });
+  }),
+
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.collection.findMany({
       orderBy: { createdAt: "desc" },
+      include: { topic: true },
     });
   }),
 

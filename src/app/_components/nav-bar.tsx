@@ -8,7 +8,9 @@ export default async function NavBar() {
   return (
     <div className="navbar sticky top-0 z-50 bg-base-200 shadow">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">{config.appLongName}</a>
+        <Link className="btn btn-ghost text-xl" href="/">
+          {config.appLongName}
+        </Link>
       </div>
       <div className="flex-none gap-2">
         <div className="form-control">

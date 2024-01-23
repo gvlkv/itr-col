@@ -13,8 +13,9 @@ import { useRouter } from "next/navigation";
 import { setLengthWith } from "~/util/array";
 import type { UserField } from "~/server/api/routers/collection";
 import { uploadFileToS3 } from "~/util/upload";
+import SubmitBtn from "./submit-btn";
 
-export default function CreateCollectionForm() {
+export default function NewCollectionForm() {
   const router = useRouter();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -45,7 +46,7 @@ export default function CreateCollectionForm() {
   const createPresignedImageUrl =
     api.collection.createPresignedImageUrl.useMutation().mutateAsync;
 
-  const topics = api.collection.getTopics.useQuery();
+  const topics = api.collection.getTopics.useQuery().data;
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); // prevent page refresh
@@ -114,7 +115,7 @@ export default function CreateCollectionForm() {
             }}
             className="select select-bordered select-sm"
           >
-            {topics.data?.map((topic) => (
+            {topics?.map((topic) => (
               <option value={topic.id} key={topic.id}>
                 {topic.name}
               </option>
@@ -147,13 +148,7 @@ export default function CreateCollectionForm() {
         selectedTypes={selectedTypes}
         setSelectedTypes={setSelectedTypes}
       />
-      <button
-        type="submit"
-        className="btn btn-primary"
-        disabled={createCollection.isLoading}
-      >
-        {createCollection.isLoading ? "Submitting..." : "Submit"}
-      </button>
+      <SubmitBtn isLoading={createCollection.isLoading} />
     </form>
   );
 }
